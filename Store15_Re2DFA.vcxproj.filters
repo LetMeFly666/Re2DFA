@@ -43,7 +43,7 @@
     <None Include="$pro_name$.def">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Store15_Re2DFA.ico">
+    <None Include="favicon.ico">
       <Filter>Resource Files</Filter>
     </None>
     <ResourceCompile Include="Store15_Re2DFA.rc">

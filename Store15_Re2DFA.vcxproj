@@ -94,7 +94,7 @@
     <QtMoc Include="Re2DFA.h"/>
     <ClCompile Include="Re2DFA.cpp"/>
     <ClCompile Include="main.cpp"/>
-    <None Include="Store15_Re2DFA.ico" />
+    <None Include="favicon.ico" />
     <ResourceCompile Include="Store15_Re2DFA.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
