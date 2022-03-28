@@ -2,11 +2,13 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-28 18:38:38
+ * @LastEditTime: 2022-03-28 18:42:28
 -->
 # Re2DFA
 
 Regular expression to DFA(Deterministic Finite State)
+
+## 实现目标
 
 ## 概念
 
@@ -18,8 +20,6 @@ Regular expression to DFA(Deterministic Finite State)
 + [选择符](#OperatorOr)
 + [连接符](#OperatorConcatenation)
 + [重复符](#OperatorRepetition)
-
-## 实现目标
 
 **@Input**
 
@@ -37,7 +37,7 @@ Regular expression to DFA(Deterministic Finite State)
 
 | 名称   | 类型     | 描述 |
 | ------ | -------- | ---- |
-| 运算符<a id="Operator"></a> | Operator | 确定正则的运算规则<br/>•支持<a href="#OperatorOr">**选择符**</a>```\|```<br/>•支持<a href="#OperatorConcatenation">**连接符**</a>```·```<br/>•支持<a href="#OperatorRepetition">**重复符**</a>```*``` |
+| 运算符<a id="Operator"></a> | Operator | 确定正则的运算规则<br/>•支持<a href="#OperatorOr">**选择符**</a><code>\|</code><br/>•支持<a href="#OperatorConcatenation">**连接符**</a>```·```<br/>•支持<a href="#OperatorRepetition">**重复符**</a>```*``` |
 
 | 名称 | 类型 | 描述 |
 | ---- | --- | --- |
