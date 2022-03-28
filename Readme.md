@@ -2,7 +2,13 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-28 16:15:14
+ * @LastEditTime: 2022-03-28 18:32:16
+-->
+a<!--
+ * @Author: LetMeFly
+ * @Date: 2022-03-28 15:29:51
+ * @LastEditors: LetMeFly
+ * @LastEditTime: 2022-03-28 18:18:18
 -->
 # Re2DFA
 
@@ -12,27 +18,35 @@ Regular expression to DFA(Deterministic Finite State)
 
 + [正则表达式](#RegularExpression)
 + [字符](#Character)
-+ [实字符](#)
-+ [空字符](#)
-+ [运算符](#)
-//TODO: 待会儿继续
++ [实字符](#CharacterReal)
++ [空字符](#CharacterEmpty)
++ [运算符](#Operator)
++ [选择符](#OperatorOr)
++ [连接符](#OperatorConcatenation)
++ [重复符](#OperatorRepetition)
+
 ## 实现目标
 
 **@Input**
 
 | 名称       | 类型   | 描述                                           |
 | :--------- | ------ | ---------------------------------------------- |
-| 正则表达式<a id="RegularExpression"></a> | String | 代表正则表达式的字符串，包括数个字符和运算符。 |
+| 正则表达式<a id="RegularExpression"></a> | String | 代表正则表达式的字符串，包括数个[字符](#Character)和[运算符](#Operator)。 |
 
 **字符**
 
 | 名称 | 类型 | 描述                                                         |
 | ---- | ---- | ------------------------------------------------------------ |
-| <a id="Character">字符</a> | Char | 代表串中要出现的字符<br/>支持**实字符**```a~z```、```A~Z```、```0~9```；<br/>支持**空字符**```ε``` |
+| 字符<a id="Character"></a> | Char | 代表串中要出现的字符<br/>•支持**实字符**<a id="CharacterReal"></a>```a~z```、```A~Z```、```0~9```<br/>•支持**空字符**<a id="CharacterEmpty"></a>```ε``` |
 
 **运算符**
 
 | 名称   | 类型     | 描述 |
 | ------ | -------- | ---- |
-| 运算符 | Operator |      |
+| 运算符<a id="Operator"></a> | Operator | 确定正则的运算规则<br/>•支持<a href="#OperatorOr">**选择符**</a>```|```<br/>•支持<a href="#OperatorConcatenation">**连接符**</a>```·```<br/>•支持<a href="#OperatorRepetition">**重复符**</a>```*``` |
 
+| 名称 | 类型 | 描述 |
+| ---- | --- | --- |
+| 选择符<a id="OperatorOr"></a> | Operator | 若```a```和```b```代表两个正则表达式，则```a|b```代表```a或b```，即无论是```a```还是```b```都能匹配正则表达式 |
+| 连接符<a id="OperatorConcatenation"></a> | Operator | 若```a```和```b```代表两个正则表达式，则```a·b```代表```a后b```（```·```可省略，```a·b```等价于```ab```），即若一个串能从某处分成两串，使得前串匹配```a```且后串匹配```b```，则此串能匹配```a·b``` |
+| 重复符<a id="OperatorRepetition"></a> | Operator | 若```a```代表一个正则表达式，则```a*```代表```数个a```（个数n≥0），即若一个串能分成数个串，使得每个串都匹配```a```，则此串能匹配```a*``` |
