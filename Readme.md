@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-28 18:42:28
+ * @LastEditTime: 2022-03-28 18:44:01
 -->
 # Re2DFA
 
@@ -41,6 +41,6 @@ Regular expression to DFA(Deterministic Finite State)
 
 | 名称 | 类型 | 描述 |
 | ---- | --- | --- |
-| 选择符<a id="OperatorOr"></a> | Operator | 若```a```和```b```代表两个正则表达式，则```a|b```代表```a或b```，即无论是```a```还是```b```都能匹配正则表达式 |
+| 选择符<a id="OperatorOr"></a> | Operator | 若```a```和```b```代表两个正则表达式，则<code>a\|b</code>代表```a或b```，即无论是```a```还是```b```都能匹配正则表达式 |
 | 连接符<a id="OperatorConcatenation"></a> | Operator | 若```a```和```b```代表两个正则表达式，则```a·b```代表```a后b```（```·```可省略，```a·b```等价于```ab```），即若一个串能从某处分成两串，使得前串匹配```a```且后串匹配```b```，则此串能匹配```a·b``` |
 | 重复符<a id="OperatorRepetition"></a> | Operator | 若```a```代表一个正则表达式，则```a*```代表```数个a```（个数n≥0），即若一个串能分成数个串，使得每个串都匹配```a```，则此串能匹配```a*``` |
