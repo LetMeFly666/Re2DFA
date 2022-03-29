@@ -3,6 +3,7 @@
 #include <QtWidgets/QWidget>
 #include "ui_Re2DFA.h"
 #include <stack>
+using namespace std;
 
 class Re2DFA : public QWidget {
     Q_OBJECT
@@ -29,4 +30,5 @@ private:
     Ui::Re2DFAClass ui;
 };
 
-const QString Re2RePo(QString re);
+QString addConOp2Re(QString re);
+QString Re2RePo(QString re);

@@ -16,7 +16,10 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
 }
 
 void Re2DFA::on_pushButton_clicked() {
-    ui.label_ReversePolish->setText(Re2RePo(ui.lineEdit->text()));
+    QString reFormatted = addConOp2Re(ui.lineEdit->text());
+    ui.label_ReformatReString->setText(reFormatted);
+    QString reversePolish = Re2RePo(reFormatted);
+    ui.label_ReversePolish->setText(reversePolish);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -44,8 +47,16 @@ void Re2DFA::on_pushButton_Rightbracket_clicked() {
     ui.lineEdit->setText(ui.lineEdit->text() + ")");
 }
 
-const QString Re2RePo(QString re) {
-    std::string s = re.toStdString();
-    
-    return QString::fromStdString(s);
+/* 添加“·”到正则表达式 */
+QString addConOp2Re(QString re) {
+    string s = re.toStdString();
+    string ans;
+    ans = "55";
+    return QString::fromStdString(ans);
+}
+
+QString Re2RePo(QString re) {
+    string ans;
+
+    return QString::fromStdString(ans);
 }
