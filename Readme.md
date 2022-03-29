@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-29 17:01:07
+ * @LastEditTime: 2022-03-29 21:11:16
 -->
 # Re2DFA
 
@@ -55,9 +55,9 @@ Regular expression to DFA(Deterministic Finite State)
 
 有以下情况需要在中间添加·：
 
-```·```：194|183
+```·```：194&#124;183
 
-```ε```：206|181
+```ε```：206&#124;181
 
 程序内部用```.```代表```·```，用```,```代表```ε```
 
