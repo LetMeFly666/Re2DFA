@@ -81,12 +81,12 @@ const QString showString(QString origin) {
 QString addConOp2Re(QString re) {
     string s = re.toStdString();
     string temp;
-    for (int i = 0; i + 1 < s.size(); i++) {
-        if ((unsigned char)s[i] == 194 && (unsigned char)s[i + 1] == 183) {  // ·
+    for (int i = 0; i < s.size(); i++) {
+        if ((unsigned char)s[i] == 194 && i + 1 < s.size() && (unsigned char)s[i + 1] == 183) {  // ·
             temp += '.';
             i++;
         }
-        else if ((unsigned char)s[i] == 206 && (unsigned char)s[i + 1] == 181) {  // ε
+        else if ((unsigned char)s[i] == 206 && i + 1 < s.size() && (unsigned char)s[i + 1] == 181) {  // ε
             temp += ',';
             i++;
         }
@@ -94,16 +94,14 @@ QString addConOp2Re(QString re) {
             temp += s[i];
         }
     }
-    temp += s[s.size() - 1];
     s = temp;
     string ans;
-    for (int i = 0; i + 1 < s.size(); i++) {
+    for (int i = 0; i < s.size(); i++) {
         ans += s[i];
-        if ((Char.count(s[i]) && Char.count(s[i + 1])) || (Char.count(s[i]) && s[i + 1] == '(') || (s[i] == ')' && Char.count(s[i + 1]))) {
+        if ((Char.count(s[i]) && i + 1 < s.size() && Char.count(s[i + 1])) || (Char.count(s[i]) && i + 1 < s.size() && s[i + 1] == '(') || (s[i] == ')' && i + 1 < s.size() && Char.count(s[i + 1]))) {
             ans += '.';
         }
     }
-    ans += s[s.size() - 1];
     return QString::fromStdString(ans);
 }
 
