@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QWidget>
 #include "ui_Re2DFA.h"
+#include <stack>
 
 class Re2DFA : public QWidget {
     Q_OBJECT
@@ -27,3 +28,5 @@ private slots:
 private:
     Ui::Re2DFAClass ui;
 };
+
+const QString Re2RePo(QString re);

@@ -16,7 +16,7 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
 }
 
 void Re2DFA::on_pushButton_clicked() {
-    
+    ui.label_ReversePolish->setText(Re2RePo(ui.lineEdit->text()));
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -42,4 +42,10 @@ void Re2DFA::on_pushButton_Leftbracket_clicked() {
 
 void Re2DFA::on_pushButton_Rightbracket_clicked() {
     ui.lineEdit->setText(ui.lineEdit->text() + ")");
+}
+
+const QString Re2RePo(QString re) {
+    std::string s = re.toStdString();
+    
+    return QString::fromStdString(s);
 }
