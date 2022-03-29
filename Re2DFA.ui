@@ -194,8 +194,8 @@
     <rect>
      <x>60</x>
      <y>240</y>
-     <width>1221</width>
-     <height>461</height>
+     <width>1191</width>
+     <height>531</height>
     </rect>
    </property>
    <property name="font">
@@ -205,7 +205,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
@@ -283,8 +283,8 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>830</x>
-     <y>60</y>
+     <x>950</x>
+     <y>810</y>
      <width>72</width>
      <height>15</height>
     </rect>
@@ -296,8 +296,8 @@
   <widget class="QLabel" name="label_Link">
    <property name="geometry">
     <rect>
-     <x>910</x>
-     <y>60</y>
+     <x>1030</x>
+     <y>810</y>
      <width>231</width>
      <height>16</height>
     </rect>

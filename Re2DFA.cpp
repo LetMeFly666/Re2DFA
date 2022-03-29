@@ -3,6 +3,7 @@
 /**错误码errorCode
 * 0   无误
 * 1   )找不到(
+* 2   双目运算符无法出栈两个字符NFA
 */
 int errorCode = 0;
 
@@ -25,9 +26,11 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
 void Re2DFA::on_pushButton_clicked() {
     QString reFormatted = addConOp2Re(ui.lineEdit->text());
     ui.label_ReformatReString->setText(showString(reFormatted));
-    // TODO: EOORO的处理
-    QString reversePolish = Re2RePo(reFormatted);
+    CONTINUE_WHEN_NOT_ERRORCODE;
+    QString reversePolish = re2RePo(reFormatted);
     ui.label_ReversePolish->setText(showString(reversePolish));
+    CONTINUE_WHEN_NOT_ERRORCODE;
+    rePo2DFA(reversePolish);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -60,6 +63,21 @@ bool Re2DFA::eventFilter(QObject* watched, QEvent* event) {
         QDesktopServices::openUrl(QUrl(QLatin1String("https://re2dfa.letmefly.xyz")));
     }
     return QWidget::eventFilter(watched, event);
+}
+
+NFA::NFA(bool isEnd) : isEnd(isEnd) {
+
+}
+
+NFA::NFA(char c) {
+    isEnd = false;  // 自己不是终止状态
+    NFA* end = new NFA(true);
+    singleEnd = end;
+    add2({ c, end });  // 连接了一个终止状态的无子NFA
+}
+
+void NFA::add2(NFA2 toWho) {
+    to.push_back(toWho);
 }
 
 /* 将用,.代替的字符串转换为ε·代表的字符串 */
@@ -105,7 +123,7 @@ QString addConOp2Re(QString re) {
     return QString::fromStdString(ans);
 }
 
-QString Re2RePo(QString re) {
+QString re2RePo(QString re) {
     string s = re.toStdString();
     string ans;
     stack<char> op;
@@ -168,4 +186,33 @@ QString Re2RePo(QString re) {
         op.pop();
     }
     return QString::fromStdString(ans);
+}
+
+void rePo2DFA(QString rePo) {
+    string s = rePo.toStdString();
+    stack<NFA*> st;
+    for (int i = 0; i < s.size(); i++) {
+        if (Char.count(s[i])) {
+            st.push(new NFA(s[i]));
+        }
+        else if (s[i] == '|') {
+            if (st.size() < 2) {
+                errorCode = 2;
+                return;
+            }
+            NFA* back = st.top();
+            st.pop();
+            NFA* front = st.top();
+            st.pop();
+            NFA* begin = new NFA();
+            NFA* end = new NFA(true);
+            begin->add2({ ',', front });
+            begin->add2({ ',', back });
+            begin->singleEnd = end;
+            front->singleEnd->isEnd = false;
+            front->singleEnd->add2({ ',', end });
+            end->singleEnd->isEnd = false;
+            end->singleEnd->add2({ ',', end });
+        }
+    }
 }
