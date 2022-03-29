@@ -7,7 +7,12 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
     setFixedSize(1310, 865);
 
     // 便捷输入
-    ui.pushButton_Connect->setToolTip("连接符（中文的“`”）");
+    ui.pushButton_Connect->setToolTip("And Character（中文的“`”）");
+    ui.pushButton_Empty->setToolTip("Empty Character");
+    ui.pushButton_Or->setToolTip("Or Character");
+    ui.pushButton_Repetition->setToolTip("Repetition Character");
+    ui.pushButton_Leftbracket->setToolTip("Left Bracket");
+    ui.pushButton_Rightbracket->setToolTip("Right Bracket");
 }
 
 void Re2DFA::on_pushButton_clicked() {
@@ -19,17 +24,22 @@ void Re2DFA::on_pushButton_Connect_clicked() {
 }
 
 void Re2DFA::on_pushButton_Empty_clicked() {
-
+    ui.lineEdit->setText(ui.lineEdit->text() + "ε");
 }
 
 void Re2DFA::on_pushButton_Or_clicked() {
+    ui.lineEdit->setText(ui.lineEdit->text() + "|");
+}
 
+
+void Re2DFA::on_pushButton_Repetition_clicked() {
+    ui.lineEdit->setText(ui.lineEdit->text() + "*");
 }
 
 void Re2DFA::on_pushButton_Leftbracket_clicked() {
-
+    ui.lineEdit->setText(ui.lineEdit->text() + "(");
 }
 
 void Re2DFA::on_pushButton_Rightbracket_clicked() {
-
+    ui.lineEdit->setText(ui.lineEdit->text() + ")");
 }

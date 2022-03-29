@@ -18,6 +18,8 @@ private slots:
 
     void on_pushButton_Or_clicked();
 
+    void on_pushButton_Repetition_clicked();
+
     void on_pushButton_Leftbracket_clicked();
 
     void on_pushButton_Rightbracket_clicked();
