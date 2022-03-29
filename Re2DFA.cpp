@@ -11,6 +11,7 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
     ui.setupUi(this);
     setWindowTitle("Regular To DFA - LetMeFly");
     setFixedSize(1310, 865);
+    ui.label_Link->installEventFilter(this);
 
     // 便捷输入
     ui.pushButton_Connect->setToolTip("And Character（中文的“`”）");
@@ -52,6 +53,13 @@ void Re2DFA::on_pushButton_Leftbracket_clicked() {
 
 void Re2DFA::on_pushButton_Rightbracket_clicked() {
     ui.lineEdit->setText(ui.lineEdit->text() + ")");
+}
+
+bool Re2DFA::eventFilter(QObject* watched, QEvent* event) {
+    if (watched == ui.label_Link && event->type() == QEvent::MouseButtonPress) {
+        QDesktopServices::openUrl(QUrl(QLatin1String("https://re2dfa.letmefly.xyz")));
+    }
+    return QWidget::eventFilter(watched, event);
 }
 
 /* 将用,.代替的字符串转换为ε·代表的字符串 */
