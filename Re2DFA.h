@@ -47,6 +47,7 @@ public:
     bool isEnd;
     NFA(bool isEnd = false);
     NFA(char c);  // 构建单字符的基本NFA
+    ~NFA();
     void add2(NFA2 toWho);
     /* 初期构建NFA时，每个NFA只有一个开始状态和一个结束状态。
     *  这个指针主要用于快速定位某个初始状态对应的结束状态。
@@ -59,7 +60,7 @@ public:
 const QString showString(QString origin);
 QString addConOp2Re(QString re);
 QString re2RePo(QString re);
-void rePo2DFA(QString rePo);
+NFA* rePo2DFA(QString rePo);
 
 static set<char> Char = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',

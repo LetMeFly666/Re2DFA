@@ -3,7 +3,9 @@
 /**错误码errorCode
 * 0   无误
 * 1   )找不到(
-* 2   双目运算符无法出栈两个字符NFA
+* 2   双目运算符无法出栈两个NFA
+* 3   单目运算符无法出栈单个NFA
+* 4   NFA构建完毕后栈中FNA个数不为一
 */
 int errorCode = 0;
 
@@ -74,6 +76,10 @@ NFA::NFA(char c) {
     NFA* end = new NFA(true);
     singleEnd = end;
     add2({ c, end });  // 连接了一个终止状态的无子NFA
+}
+
+NFA::~NFA() {
+    delete this;
 }
 
 void NFA::add2(NFA2 toWho) {
@@ -188,7 +194,7 @@ QString re2RePo(QString re) {
     return QString::fromStdString(ans);
 }
 
-void rePo2DFA(QString rePo) {
+NFA* rePo2DFA(QString rePo) {
     string s = rePo.toStdString();
     stack<NFA*> st;
     for (int i = 0; i < s.size(); i++) {
@@ -198,7 +204,7 @@ void rePo2DFA(QString rePo) {
         else if (s[i] == '|') {
             if (st.size() < 2) {
                 errorCode = 2;
-                return;
+                return nullptr;
             }
             NFA* back = st.top();
             st.pop();
@@ -206,13 +212,55 @@ void rePo2DFA(QString rePo) {
             st.pop();
             NFA* begin = new NFA();
             NFA* end = new NFA(true);
+            begin->singleEnd = end;
             begin->add2({ ',', front });
             begin->add2({ ',', back });
-            begin->singleEnd = end;
             front->singleEnd->isEnd = false;
             front->singleEnd->add2({ ',', end });
             end->singleEnd->isEnd = false;
             end->singleEnd->add2({ ',', end });
+            st.push(begin);
+        }
+        else if (s[i] == '.') {
+            if (st.size() < 2) {
+                errorCode = 2;
+                return nullptr;
+            }
+            NFA* back = st.top();
+            st.pop();
+            NFA* front = st.top();
+            st.pop();
+            NFA* begin = new NFA();
+            NFA* end = new NFA(true);
+            begin->singleEnd = end;
+            begin->add2({ ',', front });
+            front->singleEnd->isEnd = false;
+            front->singleEnd->add2({ ',', back });
+            back->singleEnd->isEnd = false;
+            back->singleEnd->add2({ ',', end });
+            st.push(begin);
+        }
+        else if (s[i] == ',') {
+            if (st.empty()) {
+                errorCode = 3;
+                return nullptr;
+            }
+            NFA* a = st.top();
+            st.pop();
+            NFA* begin = new NFA();
+            NFA* end = new NFA(true);
+            begin->singleEnd = end;
+            begin->add2({ ',', a });
+            begin->add2({ ',', end });
+            a->singleEnd->add2({ ',', a });
+            a->singleEnd->add2({ ',', end });
+            a->singleEnd->isEnd = false;
+            st.push(begin);
         }
     }
+    if (st.size() != 1) {
+        errorCode = 4;
+        return nullptr;
+    }
+    return st.top();
 }
