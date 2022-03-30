@@ -32,7 +32,8 @@ void Re2DFA::on_pushButton_clicked() {
     QString reversePolish = re2RePo(reFormatted);
     ui.label_ReversePolish->setText(showString(reversePolish));
     CONTINUE_WHEN_NOT_ERRORCODE;
-    rePo2DFA(reversePolish);
+    NFA* begin = rePo2DFA(reversePolish);
+    CONTINUE_WHEN_NOT_ERRORCODE;
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
