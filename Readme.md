@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-31 09:59:59
+ * @LastEditTime: 2022-03-31 10:01:07
 -->
 # Re2DFA
 
@@ -66,6 +66,10 @@ Regular expression to DFA(Deterministic Finite State)
 + )a
 
 ## Release
+
+### How To Release
+
+#### 打包QT程序所需依赖
 
 ```bat
 windeployqt Re2DFA.exe
