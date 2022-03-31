@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-31 13:24:18
+ * @LastEditTime: 2022-03-31 14:55:47
 -->
 # Re2DFA
 
@@ -22,6 +22,7 @@ Regular expression to DFA(Deterministic Finite State)
 + [选择符](#OperatorOr)
 + [连接符](#OperatorConcatenation)
 + [重复符](#OperatorRepetition)
++ [错误码](#ErrorCode)
 
 **@Input**
 
@@ -47,6 +48,23 @@ Regular expression to DFA(Deterministic Finite State)
 | 连接符<a id="OperatorConcatenation"></a> | Operator | 若```a```和```b```代表两个正则表达式，则```a·b```代表```a后b```（```·```可省略，```a·b```等价于```ab```），即若一个串能从某处分成两串，使得前串匹配```a```且后串匹配```b```，则此串能匹配```a·b``` |
 | 重复符<a id="OperatorRepetition"></a> | Operator | 若```a```代表一个正则表达式，则```a*```代表```数个a```（个数n≥0），即若一个串能分成数个串，使得每个串都匹配```a```，则此串能匹配```a*``` |
 
+**错误码**
+
+<a id="ErrorCode"></a>为了使得用户输入错误表达式时程序不至于崩溃，程序具有了一定程度上的纠错功能。
+
+目前支持以下错误处理：
+
+| 值 | 类型 | 描述 |
+| ---- | --- | --- |
+| 0 | Int | 无误 |
+| 1 | Int | )找不到( |
+| 2 | Int | 双目运算符无法出栈两个NFA |
+| 3 | Int | 单目运算符无法出栈单个NFA |
+| 4 | Int | NFA构建完毕后栈中FNA个数不为一 |
+| 5 | Int | 出现不受支持的字符 |
+
+
+
 ## 实现思路
 
 输入的正则表达式 → 添加上省略的· → 转换为逆波兰表达式 → 转为NFA → 转为DFA
@@ -64,6 +82,8 @@ Regular expression to DFA(Deterministic Finite State)
 + ab
 + a(
 + )a
++ *b
++ *(
 
 ## Release
 
