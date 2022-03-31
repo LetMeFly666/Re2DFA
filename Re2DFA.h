@@ -5,6 +5,8 @@
 #include <QWebEngineView>
 #include <QUrl>
 #include "ui_Re2DFA.h"
+#include <fstream>
+#include <queue>
 #include <stack>
 #include <set>
 
@@ -41,9 +43,8 @@ private:
 
 /* NFA是一个状态圈+数个向后的边 */
 class NFA {
-private:
-    vector<NFA2> to;
 public:
+    vector<NFA2> to;
     bool isEnd;
     NFA(bool isEnd = false);
     NFA(char c);  // 构建单字符的基本NFA
@@ -62,7 +63,7 @@ const QString showString(QString origin);
 QString addConOp2Re(QString re);
 QString re2RePo(QString re);
 NFA* rePo2DFA(QString rePo);
-void visualizeDFA(NFA* head);
+void visualizeDFA(NFA* head, Ui::Re2DFAClass& ui);
 
 static set<char> Char = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',

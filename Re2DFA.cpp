@@ -7,6 +7,8 @@
 * 3   单目运算符无法出栈单个NFA
 * 4   NFA构建完毕后栈中FNA个数不为一
 * 5   出现不受支持的字符
+* 6   内置文件丢失
+* 7   无写文件权限
 */
 int errorCode = 0;
 
@@ -18,7 +20,6 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
     initTabwidget(ui);
     ui.label_Link->installEventFilter(this);
     ui.widget_htmlDoc->load(QUrl("https://re2dfa.letmefly.xyz/"));
-    
 
     // 便捷输入
     ui.pushButton_Connect->setToolTip("And Character（中文的“`”）");
@@ -39,7 +40,7 @@ void Re2DFA::on_pushButton_clicked() {
     CONTINUE_WHEN_NOT_ERRORCODE;
     NFA* begin = rePo2DFA(reversePolish);
     CONTINUE_WHEN_NOT_ERRORCODE;
-
+    visualizeDFA(begin, ui);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -94,6 +95,7 @@ void NFA::add2(NFA2 toWho) {
 }
 
 void initTabwidget(Ui::Re2DFAClass& ui) {
+    errorCode = 0;
     ui.label_ReformatReString->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
     ui.label_ReversePolish->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
     ui.widget_htmlNFA->load(QUrl("file:///initialDFA.html"));
@@ -289,6 +291,64 @@ NFA* rePo2DFA(QString rePo) {
     return st.top();
 }
 
-void visualizeDFA(NFA* head) {
-
+void visualizeDFA(NFA* head, Ui::Re2DFAClass& ui) {
+    auto getFileData = [](const char* fileName) {
+        string data;
+        string oneLine;
+        ifstream istr(fileName, ios::in);
+        if (!istr.is_open()) {
+            errorCode = 6;
+            return (string)"";
+        }
+        while (getline(istr, oneLine)) {
+            data += oneLine + "\n";
+        }
+        istr.close();
+        return data;
+    };
+    auto showChar = [](char c) {
+        if (c == ',')
+            return (string)"ε";
+        string s;
+        s += c;
+        return s;
+    };
+    string data = getFileData("DFA_head.html");
+    if (errorCode) return;
+    // #region: generate mermaid code
+    set<NFA2> alreadyPath;
+    map<NFA*, string> nodeMap;
+    nodeMap[head] = "Begin";
+    nodeMap[head->singleEnd] = "End";
+    queue<NFA*> nodes;
+    nodes.push(head);
+    int nodeNum = 1;
+    while (nodes.size()) {
+        NFA* node = nodes.front();
+        nodes.pop();
+        for (NFA2 to : node->to) {
+            if (alreadyPath.count(to)) {
+                continue;
+            }
+            alreadyPath.insert(to);
+            NFA* nextNode = to.second;
+            if (!nodeMap.count(nextNode)) {
+                nodes.push(nextNode);
+                nodeMap[nextNode] = to_string(nodeNum++);
+                data += nodeMap[nextNode] + "((" + nodeMap[nextNode] + "))\n";
+            }
+            data += nodeMap[node] + " --" + showChar(to.first) + "--> " + nodeMap[nextNode] + "\n";
+        }
+    }
+    // #endregion
+    data += getFileData("DFA_tail.html");
+    ofstream ostr("output.html", ios::out);
+    if (!ostr.is_open()) {
+        errorCode = 7;
+        return;
+    }
+    ostr << data;
+    ostr.close();
+    // 显示
+    ui.widget_htmlNFA->load(QUrl("file:///output.html"));
 }

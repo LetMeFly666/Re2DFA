@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-31 21:28:53
+ * @LastEditTime: 2022-03-31 23:00:35
 -->
 # Re2DFA
 
@@ -62,6 +62,8 @@ Regular expression to DFA(Deterministic Finite State)
 | 3 | Int | 单目运算符无法出栈单个NFA |
 | 4 | Int | NFA构建完毕后栈中FNA个数不为一 |
 | 5 | Int | 出现不受支持的字符 |
+| 6 | Int | 内置文件丢失 |
+| 7 | Int | 无写文件权限 |
 
 
 
@@ -121,3 +123,10 @@ windeployqt Re2DFA.exe
 ```bat
 "F:\OtherApps\Program\QT\Apps\5.14.2\msvc2017_64\bin\windeployqt.exe" Re2DFA.exe
 ```
+
+## TODO
+
+### BugFix
+
++ a* 直接为 a
++ a|b 的 b 不指向End
