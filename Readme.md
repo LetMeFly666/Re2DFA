@@ -2,13 +2,13 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-31 18:56:17
+ * @LastEditTime: 2022-03-31 21:28:53
 -->
 # Re2DFA
 
 Regular expression to DFA(Deterministic Finite State)
 
-项目地址：[https://github.com/LetMeFly666/Re2DFA](https://github.com/LetMeFly666/Re2DFA)
+项目地址：[https://github.com/LetMeFly666/Re2DFA](https://github.com/LetMeFly666/Re2DFA) （预计2022年6月变成public）
 
 ## 实现目标
 

@@ -15,10 +15,9 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
     ui.setupUi(this);
     setWindowTitle("Regular To DFA - LetMeFly");
     setFixedSize(1310, 865);
+    initTabwidget(ui);
     ui.label_Link->installEventFilter(this);
     ui.widget_htmlDoc->load(QUrl("https://re2dfa.letmefly.xyz/"));
-    ui.widget_htmlNFA->load(QUrl("file:///del.html"));
-    initTabwidget(ui);
     
 
     // 便捷输入
@@ -97,6 +96,7 @@ void NFA::add2(NFA2 toWho) {
 void initTabwidget(Ui::Re2DFAClass& ui) {
     ui.label_ReformatReString->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
     ui.label_ReversePolish->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
+    ui.widget_htmlNFA->load(QUrl("file:///initialDFA.html"));
 }
 
 /* 将用,.代替的字符串转换为ε·代表的字符串 */
@@ -287,4 +287,8 @@ NFA* rePo2DFA(QString rePo) {
         return nullptr;
     }
     return st.top();
+}
+
+void visualizeDFA(NFA* head) {
+
 }
