@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-31 14:55:47
+ * @LastEditTime: 2022-03-31 18:56:17
 -->
 # Re2DFA
 
@@ -84,6 +84,27 @@ Regular expression to DFA(Deterministic Finite State)
 + )a
 + *b
 + *(
+
+### 逆波兰到NFA
+
+#### 构建NFA
+
+构建NFA栈，从左到右遍历逆波兰表达式：
+
++ 遇到字母：构建基本NFA入栈
++ 遇到运算符：出栈相应数量的NFA，构建新的NFA入栈
+
+最终栈中剩且仅剩下一个NFA记为最终的NFA
+
+#### NFA的可视化
+
+这里本来准备尝试使用GraphViz。但是放弃的原因有两点：
+
+1. C语言不好配置GraphViz的头文件等，若直接调用编译好的dots.exe则Release需要增加20多M
+
+2. GraphViz生成的图像不太好控制大小方向，且似乎没有颜色
+
+当成功让QT显示了html 且 成功用js生成mermaid图后，决定使用[此项目](https://github.com/mermaid-js/mermaid)的js将程序生成的源码转成图像。
 
 ## Release
 
