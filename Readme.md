@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-29 21:11:16
+ * @LastEditTime: 2022-03-31 09:59:59
 -->
 # Re2DFA
 
@@ -64,3 +64,15 @@ Regular expression to DFA(Deterministic Finite State)
 + ab
 + a(
 + )a
+
+## Release
+
+```bat
+windeployqt Re2DFA.exe
+```
+
+其中 ```windeployqt``` 可以直接打开```QT的命令行```来使用。或者找到自己电脑上```windeployqt.exe```的位置。例如我电脑```QT安装目录```是```F:\OtherApps\Program\QT\Apps```，安装版本是```msvc2017 x64 5.14.2```，那么我电脑上```windeployqt.exe```就在：```F:\OtherApps\Program\QT\Apps\5.14.2\msvc2017_64\bin\windeployqt.exe```
+
+```bat
+"F:\OtherApps\Program\QT\Apps\5.14.2\msvc2017_64\bin\windeployqt.exe" Re2DFA.exe
+```
