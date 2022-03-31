@@ -8,7 +8,7 @@
 
 Regular expression to DFA(Deterministic Finite State)
 
-[项目地址](https://github.com/LetMeFly666/Re2DFA)
+项目地址：[https://github.com/LetMeFly666/Re2DFA](https://github.com/LetMeFly666/Re2DFA)
 
 ## 实现目标
 
