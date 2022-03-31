@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QWidget>
 #include <QDesktopServices>
+#include <QWebEngineView>
 #include <QUrl>
 #include "ui_Re2DFA.h"
-//#include <utility>  // pair
 #include <stack>
 #include <set>
 
@@ -67,4 +67,8 @@ static set<char> Char = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     ','  // ε
+};
+
+static set<char> Op = {
+    '(', ')', '*', '.', '|'
 };

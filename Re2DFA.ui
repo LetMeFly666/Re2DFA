@@ -205,8 +205,23 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>3</number>
    </property>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>文档</string>
+    </attribute>
+    <widget class="QWebEngineView" name="widget_htmlDoc" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1191</width>
+       <height>501</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
      <string>格式化正则表达式</string>
@@ -227,7 +242,7 @@
       </font>
      </property>
      <property name="text">
-      <string/>
+      <string>请输入正则表达式并点击转换按钮</string>
      </property>
     </widget>
    </widget>
@@ -251,7 +266,7 @@
       </font>
      </property>
      <property name="text">
-      <string/>
+      <string>请输入正则表达式并点击转换按钮</string>
      </property>
     </widget>
    </widget>
@@ -259,6 +274,16 @@
     <attribute name="title">
      <string>NFA</string>
     </attribute>
+    <widget class="QWebEngineView" name="widget_htmlNFA" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1191</width>
+       <height>501</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -314,6 +339,14 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header location="global">qwebengineview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

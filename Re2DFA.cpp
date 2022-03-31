@@ -6,6 +6,7 @@
 * 2   双目运算符无法出栈两个NFA
 * 3   单目运算符无法出栈单个NFA
 * 4   NFA构建完毕后栈中FNA个数不为一
+* 5   出现不受支持的字符
 */
 int errorCode = 0;
 
@@ -15,6 +16,9 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Regular To DFA - LetMeFly");
     setFixedSize(1310, 865);
     ui.label_Link->installEventFilter(this);
+    ui.widget_htmlDoc->load(QUrl("https://re2dfa.letmefly.xyz/"));
+    ui.widget_htmlNFA->load(QUrl("file:///del.html"));
+    
 
     // 便捷输入
     ui.pushButton_Connect->setToolTip("And Character（中文的“`”）");
@@ -26,11 +30,17 @@ Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
 }
 
 void Re2DFA::on_pushButton_clicked() {
+    auto initTabview = [&]() {
+        ui.label_ReformatReString->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
+        ui.label_ReversePolish->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
+    };
+    initTabview();
     QString reFormatted = addConOp2Re(ui.lineEdit->text());
     ui.label_ReformatReString->setText(showString(reFormatted));
     CONTINUE_WHEN_NOT_ERRORCODE;
     QString reversePolish = re2RePo(reFormatted);
     ui.label_ReversePolish->setText(showString(reversePolish));
+    //return;
     CONTINUE_WHEN_NOT_ERRORCODE;
     NFA* begin = rePo2DFA(reversePolish);
     CONTINUE_WHEN_NOT_ERRORCODE;
@@ -69,7 +79,7 @@ bool Re2DFA::eventFilter(QObject* watched, QEvent* event) {
 }
 
 NFA::NFA(bool isEnd) : isEnd(isEnd) {
-
+    singleEnd = nullptr;
 }
 
 NFA::NFA(char c) {
@@ -115,15 +125,26 @@ QString addConOp2Re(QString re) {
             temp += ',';
             i++;
         }
-        else {
+        else if (Op.count(s[i]) || Char.count(s[i])) {
             temp += s[i];
+        }
+        else {
+            errorCode = 5;
+            // 第{i + 1}个字符{错误字符}为不受支持的字符
+            string error = "\347\254\254" + to_string((i + 1)) + "\344\270\252\345\255\227\347\254\246'" + s[i] + "'\344\270\272\344\270\215\345\217\227\346\224\257\346\214\201\347\232\204\345\255\227\347\254\246";
+            return QString::fromStdString(error);
         }
     }
     s = temp;
     string ans;
     for (int i = 0; i < s.size(); i++) {
         ans += s[i];
-        if ((Char.count(s[i]) && i + 1 < s.size() && Char.count(s[i + 1])) || (Char.count(s[i]) && i + 1 < s.size() && s[i + 1] == '(') || (s[i] == ')' && i + 1 < s.size() && Char.count(s[i + 1]))) {
+        if ((Char.count(s[i]) && i + 1 < s.size() && Char.count(s[i + 1])) 
+            || (Char.count(s[i]) && i + 1 < s.size() && s[i + 1] == '(') 
+            || (s[i] == ')' && i + 1 < s.size() && Char.count(s[i + 1]))
+            || (s[i] == '*' && i + 1 < s.size() && Char.count(s[i + 1]))
+            || (s[i] == '*' && i + 1 < s.size() && s[i + 1] == '(')
+            ) {
             ans += '.';
         }
     }
@@ -218,8 +239,8 @@ NFA* rePo2DFA(QString rePo) {
             begin->add2({ ',', back });
             front->singleEnd->isEnd = false;
             front->singleEnd->add2({ ',', end });
-            end->singleEnd->isEnd = false;
-            end->singleEnd->add2({ ',', end });
+            back->singleEnd->isEnd = false;
+            back->singleEnd->add2({ ',', end });
             st.push(begin);
         }
         else if (s[i] == '.') {
