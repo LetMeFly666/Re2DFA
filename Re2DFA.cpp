@@ -266,7 +266,7 @@ NFA* rePo2DFA(QString rePo) {
             back->singleEnd->add2({ ',', end });
             st.push(begin);
         }
-        else if (s[i] == ',') {
+        else if (s[i] == '*') {
             if (st.empty()) {
                 errorCode = 3;
                 return nullptr;
