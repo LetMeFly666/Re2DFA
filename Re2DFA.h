@@ -17,6 +17,7 @@ using namespace std;
 #define NFAf2 pair<NFA*, NFA2>  // NFA from to: <from, <through, to>>
 #define State set<NFA*>
 #define Table map<State, map<char, State>>  // <From State, [<Through Which Char, To State>]>
+#define DFA2 pair<char, DFA*>
 
 class Re2DFA : public QWidget {
     Q_OBJECT
@@ -61,6 +62,15 @@ public:
     NFA* singleEnd;
 };
 
+class DFA {
+public:
+    vector<DFA2> to;
+    bool isEnd;
+    DFA(bool isEnd = false);
+    ~DFA();
+    void add2(DFA2 toWho);
+};
+
 void initTabwidget(Ui::Re2DFAClass& ui);
 const QString showString(QString origin);
 QString addConOp2Re(QString re);
@@ -68,7 +78,7 @@ QString re2RePo(QString re);
 NFA* rePo2NFA(QString rePo);
 void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui);
 Table NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui);
-void table2DFA(Table table);
+void table2DFA(Table table, NFA* NFAOnlyEnd);
 
 static set<char> Char = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',

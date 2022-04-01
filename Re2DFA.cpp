@@ -44,7 +44,7 @@ void Re2DFA::on_pushButton_clicked() {
     visualizeNFA(begin, ui);
     CONTINUE_WHEN_NOT_ERRORCODE;
     Table NFAStateTable = NFA2NFAStateTable(begin, ui);
-    table2DFA(NFAStateTable);
+    table2DFA(NFAStateTable, begin->singleEnd);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -95,6 +95,18 @@ NFA::~NFA() {
 }
 
 void NFA::add2(NFA2 toWho) {
+    to.push_back(toWho);
+}
+
+DFA::DFA(bool isEnd) : isEnd(isEnd) {
+
+}
+
+DFA::~DFA() {
+    delete this;
+}
+
+void DFA::add2(DFA2 toWho) {
     to.push_back(toWho);
 }
 
@@ -419,6 +431,6 @@ Table NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
     return table;
 }
 
-void table2DFA(Table table) {
+void table2DFA(Table table, NFA* NFAOnlyEnd) {
     // TODO:
 }
