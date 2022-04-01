@@ -14,6 +14,7 @@ using namespace std;
 
 #define CONTINUE_WHEN_NOT_ERRORCODE if (errorCode) return
 #define NFA2 pair<char, NFA*>
+#define NFAf2 pair<NFA*, NFA2>  // NFA from to: <from, <through, to>>
 
 class Re2DFA : public QWidget {
     Q_OBJECT

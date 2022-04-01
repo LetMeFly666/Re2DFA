@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-03-31 23:00:35
+ * @LastEditTime: 2022-04-01 09:09:10
 -->
 # Re2DFA
 
@@ -128,5 +128,3 @@ windeployqt Re2DFA.exe
 
 ### BugFix
 
-+ a* 直接为 a
-+ a|b 的 b 不指向End

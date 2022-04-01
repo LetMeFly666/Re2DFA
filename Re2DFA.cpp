@@ -316,7 +316,7 @@ void visualizeDFA(NFA* head, Ui::Re2DFAClass& ui) {
     string data = getFileData("DFA_head.html");
     if (errorCode) return;
     // #region: generate mermaid code
-    set<NFA2> alreadyPath;
+    set<NFAf2> alreadyPath;
     map<NFA*, string> nodeMap;
     nodeMap[head] = "Begin";
     nodeMap[head->singleEnd] = "End";
@@ -327,10 +327,10 @@ void visualizeDFA(NFA* head, Ui::Re2DFAClass& ui) {
         NFA* node = nodes.front();
         nodes.pop();
         for (NFA2 to : node->to) {
-            if (alreadyPath.count(to)) {
+            if (alreadyPath.count({node, to})) {
                 continue;
             }
-            alreadyPath.insert(to);
+            alreadyPath.insert({ node, to });
             NFA* nextNode = to.second;
             if (!nodeMap.count(nextNode)) {
                 nodes.push(nextNode);
