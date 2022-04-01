@@ -338,6 +338,7 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
     string data = getFileData("DFA_head.html");
     if (errorCode) return;
     // #region: generate mermaid code
+    data += "End((End))\nstyle End stroke-width:5px\n";
     set<NFAf2> alreadyPath;
     map<NFA*, string> nodeMap;
     nodeMap[head] = "Begin";
