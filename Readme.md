@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-01 09:09:10
+ * @LastEditTime: 2022-04-01 10:46:46
 -->
 # Re2DFA
 
@@ -106,7 +106,9 @@ Regular expression to DFA(Deterministic Finite State)
 
 2. GraphViz生成的图像不太好控制大小方向，且似乎没有颜色
 
-当成功让QT显示了html 且 成功用js生成mermaid图后，决定使用[此项目](https://github.com/mermaid-js/mermaid)的js将程序生成的源码转成图像。
+当成功让QT显示了html 且 成功用js生成mermaid图后，决定使用[此项目(https://github.com/mermaid-js/mermaid)](https://github.com/mermaid-js/mermaid)的js将程序生成的源码转成图像。
+
+在此对开源项目的开发者致敬！
 
 ## Release
 
