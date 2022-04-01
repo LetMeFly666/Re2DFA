@@ -63,8 +63,11 @@ void initTabwidget(Ui::Re2DFAClass& ui);
 const QString showString(QString origin);
 QString addConOp2Re(QString re);
 QString re2RePo(QString re);
-NFA* rePo2DFA(QString rePo);
-void visualizeDFA(NFA* head, Ui::Re2DFAClass& ui);
+NFA* rePo2NFA(QString rePo);
+void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui);
+void NFA2DFA(NFA* head, Ui::Re2DFAClass& ui);
+typedef set<NFA*> State;
+
 
 static set<char> Char = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',

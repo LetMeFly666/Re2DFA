@@ -285,6 +285,21 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_5">
+    <attribute name="title">
+     <string>DFA</string>
+    </attribute>
+    <widget class="QWebEngineView" name="widget_htmlDFA" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1191</width>
+       <height>501</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">

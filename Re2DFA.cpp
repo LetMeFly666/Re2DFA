@@ -11,6 +11,7 @@
 * 7   无写文件权限
 */
 int errorCode = 0;
+set<char> charsAppearedWithoutEmpty;
 
 Re2DFA::Re2DFA(QWidget *parent) : QWidget(parent) {
     // 主窗口
@@ -38,9 +39,11 @@ void Re2DFA::on_pushButton_clicked() {
     QString reversePolish = re2RePo(reFormatted);
     ui.label_ReversePolish->setText(showString(reversePolish));
     CONTINUE_WHEN_NOT_ERRORCODE;
-    NFA* begin = rePo2DFA(reversePolish);
+    NFA* begin = rePo2NFA(reversePolish);
     CONTINUE_WHEN_NOT_ERRORCODE;
-    visualizeDFA(begin, ui);
+    visualizeNFA(begin, ui);
+    CONTINUE_WHEN_NOT_ERRORCODE;
+    NFA2DFA(begin, ui);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -96,9 +99,11 @@ void NFA::add2(NFA2 toWho) {
 
 void initTabwidget(Ui::Re2DFAClass& ui) {
     errorCode = 0;
+    charsAppearedWithoutEmpty.clear();
     ui.label_ReformatReString->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
     ui.label_ReversePolish->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
     ui.widget_htmlNFA->load(QUrl("file:///initialDFA.html"));
+    ui.widget_htmlDFA->load(QUrl("file:///initialDFA.html"));
 }
 
 /* 将用,.代替的字符串转换为ε·代表的字符串 */
@@ -116,7 +121,7 @@ const QString showString(QString origin) {
     return QString::fromStdString(ans);
 }
 
-/* 添加“·”到正则表达式 */
+/* 添加“·”到正则表达式，并将“·”转为“.”、“ε”转为“,” */
 QString addConOp2Re(QString re) {
     string s = re.toStdString();
     string temp;
@@ -179,10 +184,14 @@ QString re2RePo(QString re) {
         return c2i(a) - c2i(b);
     };
     for (int i = 0; i < s.size(); i++) {
+        // 字符
         if (Char.count(s[i])) {
             ans += s[i];
+            if (s[i] != ',')
+                charsAppearedWithoutEmpty.insert(s[i]);
             continue;
         }
+        // 运算符
         if (s[i] == '(') {
             op.push(s[i]);
         }
@@ -220,7 +229,7 @@ QString re2RePo(QString re) {
     return QString::fromStdString(ans);
 }
 
-NFA* rePo2DFA(QString rePo) {
+NFA* rePo2NFA(QString rePo) {
     string s = rePo.toStdString();
     stack<NFA*> st;
     for (int i = 0; i < s.size(); i++) {
@@ -291,7 +300,7 @@ NFA* rePo2DFA(QString rePo) {
     return st.top();
 }
 
-void visualizeDFA(NFA* head, Ui::Re2DFAClass& ui) {
+void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
     auto getFileData = [](const char* fileName) {
         string data;
         string oneLine;
@@ -351,4 +360,34 @@ void visualizeDFA(NFA* head, Ui::Re2DFAClass& ui) {
     ostr.close();
     // 显示
     ui.widget_htmlNFA->load(QUrl("file:///output.html"));
+}
+
+void NFA2DFA(NFA* head, Ui::Re2DFAClass& ui) {
+    map<State, map<char, State>> table;
+    queue<State> toCal;
+    set<State> alreadyInQueue;
+    toCal.push({ head });
+    alreadyInQueue.insert({ head });
+    auto getEmptyClosure = [](State nowState) {
+        // TODO
+    };
+    auto state2state = [](State nowState, char c) {
+        State newState;
+        for (NFA* thisNode : nowState) {  // 每个节点走1次char和n次ε
+            // TODO
+        }
+        return newState;
+    };
+    while (toCal.size()) {
+        State thisState = toCal.front();
+        toCal.pop();
+        for (char c : charsAppearedWithoutEmpty) {
+            State newState = state2state(thisState, c);
+            table[thisState][c] = newState;
+            if (!alreadyInQueue.count(newState)) {
+                toCal.push(newState);
+                alreadyInQueue.insert(newState);
+            }
+        }
+    }
 }
