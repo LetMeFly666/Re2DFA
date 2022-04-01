@@ -39,12 +39,12 @@ void Re2DFA::on_pushButton_clicked() {
     QString reversePolish = re2RePo(reFormatted);
     ui.label_ReversePolish->setText(showString(reversePolish));
     CONTINUE_WHEN_NOT_ERRORCODE;
-    NFA* begin = rePo2NFA(reversePolish);
+    NFA* NFABegin = rePo2NFA(reversePolish);
     CONTINUE_WHEN_NOT_ERRORCODE;
-    visualizeNFA(begin, ui);
+    visualizeNFA(NFABegin, ui);
     CONTINUE_WHEN_NOT_ERRORCODE;
-    Table NFAStateTable = NFA2NFAStateTable(begin, ui);
-    table2DFA(NFAStateTable, begin->singleEnd);
+    TableWithBegin NFAStateTable = NFA2NFAStateTable(NFABegin, ui);
+    DFA* DFABegin = table2DFA(NFAStateTable, NFABegin->singleEnd);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -375,7 +375,7 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
     ui.widget_htmlNFA->load(QUrl("file:///outputNFA.html"));
 }
 
-Table NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
+TableWithBegin NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
     auto getEmptyClosure = [](State nowState) {  // 经过数个ε
         State newState = nowState;
         queue<NFA*> q;
@@ -413,8 +413,9 @@ Table NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
     Table table;
     queue<State> toCal;
     set<State> alreadyInQueue;
-    toCal.push({ head });
-    alreadyInQueue.insert({ head });
+    State beginState = getEmptyClosure({ head });
+    toCal.push(beginState);
+    alreadyInQueue.insert(beginState);
 
     while (toCal.size()) {
         State thisState = toCal.front();
@@ -428,9 +429,13 @@ Table NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
             }
         }
     }
-    return table;
+
+    TableWithBegin tableWithBegin = {table, beginState};
+    return tableWithBegin;
 }
 
-void table2DFA(Table table, NFA* NFAOnlyEnd) {
-    // TODO:
+DFA* table2DFA(TableWithBegin tableWithBegin, NFA* NFAOnlyEnd) {
+    DFA* head = new DFA;
+    auto [table, beginState] = tableWithBegin;
+    return head;
 }
