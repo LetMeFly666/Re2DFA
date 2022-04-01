@@ -43,7 +43,8 @@ void Re2DFA::on_pushButton_clicked() {
     CONTINUE_WHEN_NOT_ERRORCODE;
     visualizeNFA(begin, ui);
     CONTINUE_WHEN_NOT_ERRORCODE;
-    NFA2DFA(begin, ui);
+    Table NFAStateTable = NFA2NFAStateTable(begin, ui);
+    table2DFA(NFAStateTable);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -351,7 +352,7 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
     }
     // #endregion
     data += getFileData("DFA_tail.html");
-    ofstream ostr("output.html", ios::out);
+    ofstream ostr("outputNFA.html", ios::out);
     if (!ostr.is_open()) {
         errorCode = 7;
         return;
@@ -359,25 +360,50 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
     ostr << data;
     ostr.close();
     // 显示
-    ui.widget_htmlNFA->load(QUrl("file:///output.html"));
+    ui.widget_htmlNFA->load(QUrl("file:///outputNFA.html"));
 }
 
-void NFA2DFA(NFA* head, Ui::Re2DFAClass& ui) {
-    map<State, map<char, State>> table;
+Table NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
+    auto getEmptyClosure = [](State nowState) {  // 经过数个ε
+        State newState = nowState;
+        queue<NFA*> q;
+        for (NFA* thisNode : nowState) {
+            q.push(thisNode);
+        }
+        while (q.size()) {
+            NFA* thisNode = q.front();
+            q.pop();
+            for (NFA2 to : thisNode->to) {
+                if (to.first == ',') {
+                    NFA* toNode = to.second;
+                    if (!newState.count(toNode)) {
+                        newState.insert(toNode);
+                        q.push(toNode);
+                    }
+                }
+            }
+        }
+        return newState;
+    };
+    auto state2state = [getEmptyClosure](State nowState, char c) {
+        State newState;
+        for (NFA* thisNode : nowState) {  // 每个节点走1次char
+            for (NFA2 to : thisNode->to) {
+                if (to.first == c) {
+                    newState.insert(to.second);
+                }
+            }
+        }
+        newState = getEmptyClosure(newState);
+        return newState;
+    };
+
+    Table table;
     queue<State> toCal;
     set<State> alreadyInQueue;
     toCal.push({ head });
     alreadyInQueue.insert({ head });
-    auto getEmptyClosure = [](State nowState) {
-        // TODO
-    };
-    auto state2state = [](State nowState, char c) {
-        State newState;
-        for (NFA* thisNode : nowState) {  // 每个节点走1次char和n次ε
-            // TODO
-        }
-        return newState;
-    };
+
     while (toCal.size()) {
         State thisState = toCal.front();
         toCal.pop();
@@ -390,4 +416,9 @@ void NFA2DFA(NFA* head, Ui::Re2DFAClass& ui) {
             }
         }
     }
+    return table;
+}
+
+void table2DFA(Table table) {
+    // TODO:
 }

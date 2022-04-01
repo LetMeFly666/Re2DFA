@@ -15,6 +15,8 @@ using namespace std;
 #define CONTINUE_WHEN_NOT_ERRORCODE if (errorCode) return
 #define NFA2 pair<char, NFA*>
 #define NFAf2 pair<NFA*, NFA2>  // NFA from to: <from, <through, to>>
+#define State set<NFA*>
+#define Table map<State, map<char, State>>  // <From State, [<Through Which Char, To State>]>
 
 class Re2DFA : public QWidget {
     Q_OBJECT
@@ -65,9 +67,8 @@ QString addConOp2Re(QString re);
 QString re2RePo(QString re);
 NFA* rePo2NFA(QString rePo);
 void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui);
-void NFA2DFA(NFA* head, Ui::Re2DFAClass& ui);
-typedef set<NFA*> State;
-
+Table NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui);
+void table2DFA(Table table);
 
 static set<char> Char = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
