@@ -110,6 +110,29 @@ void DFA::add2(DFA2 toWho) {
     to.push_back(toWho);
 }
 
+string Visualizer::getFileData(const char* fileName) {
+    string data;
+    string oneLine;
+    ifstream istr(fileName, ios::in);
+    if (!istr.is_open()) {
+        errorCode = 6;
+        return (string)"";
+    }
+    while (getline(istr, oneLine)) {
+        data += oneLine + "\n";
+    }
+    istr.close();
+    return data;
+}
+
+string Visualizer::showChar(char c) {
+    if (c == ',')
+        return (string)"ε";
+    string s;
+    s += c;
+    return s;
+}
+
 void initTabwidget(Ui::Re2DFAClass& ui) {
     errorCode = 0;
     charsAppearedWithoutEmpty.clear();
@@ -314,28 +337,8 @@ NFA* rePo2NFA(QString rePo) {
 }
 
 void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
-    auto getFileData = [](const char* fileName) {
-        string data;
-        string oneLine;
-        ifstream istr(fileName, ios::in);
-        if (!istr.is_open()) {
-            errorCode = 6;
-            return (string)"";
-        }
-        while (getline(istr, oneLine)) {
-            data += oneLine + "\n";
-        }
-        istr.close();
-        return data;
-    };
-    auto showChar = [](char c) {
-        if (c == ',')
-            return (string)"ε";
-        string s;
-        s += c;
-        return s;
-    };
-    string data = getFileData("DFA_head.html");
+    Visualizer vis;
+    string data = vis.getFileData("DFA_head.html");
     if (errorCode) return;
     // #region: generate mermaid code
     data += "End((End))\nstyle End stroke-width:5px\n";
@@ -360,11 +363,11 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
                 nodeMap[nextNode] = to_string(nodeNum++);
                 data += nodeMap[nextNode] + "((" + nodeMap[nextNode] + "))\n";
             }
-            data += nodeMap[node] + " --" + showChar(to.first) + "--> " + nodeMap[nextNode] + "\n";
+            data += nodeMap[node] + " --" + vis.showChar(to.first) + "--> " + nodeMap[nextNode] + "\n";
         }
     }
     // #endregion
-    data += getFileData("DFA_tail.html");
+    data += vis.getFileData("DFA_tail.html");
     ofstream ostr("outputNFA.html", ios::out);
     if (!ostr.is_open()) {
         errorCode = 7;
@@ -457,4 +460,8 @@ DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd) {
         }
     }
     return head;
+}
+
+void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui) {
+
 }

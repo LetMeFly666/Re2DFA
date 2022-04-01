@@ -72,6 +72,12 @@ public:
     void add2(DFA2 toWho);
 };
 
+class Visualizer {
+public:
+    string getFileData(const char* fileName);
+    string showChar(char c);
+};
+
 void initTabwidget(Ui::Re2DFAClass& ui);
 const QString showString(QString origin);
 QString addConOp2Re(QString re);
@@ -80,6 +86,7 @@ NFA* rePo2NFA(QString rePo);
 void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui);
 TableWithBeginEnd NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui);
 DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd);
+void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui);
 
 static set<char> Char = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
