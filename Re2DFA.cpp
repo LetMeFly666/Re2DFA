@@ -43,7 +43,7 @@ void Re2DFA::on_pushButton_clicked() {
     CONTINUE_WHEN_NOT_ERRORCODE;
     visualizeNFA(NFABegin, ui);
     CONTINUE_WHEN_NOT_ERRORCODE;
-    TableWithBegin NFAStateTable = NFA2NFAStateTable(NFABegin, ui);
+    TableWithBeginEnd NFAStateTable = NFA2NFAStateTable(NFABegin, ui);
     DFA* DFABegin = table2DFA(NFAStateTable, NFABegin->singleEnd);
 }
 
@@ -375,7 +375,7 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
     ui.widget_htmlNFA->load(QUrl("file:///outputNFA.html"));
 }
 
-TableWithBegin NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
+TableWithBeginEnd NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
     auto getEmptyClosure = [](State nowState) {  // 经过数个ε
         State newState = nowState;
         queue<NFA*> q;
@@ -430,12 +430,30 @@ TableWithBegin NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
         }
     }
 
-    TableWithBegin tableWithBegin = {table, beginState};
+    TableWithBeginEnd tableWithBegin = { table, beginState, head->singleEnd };
     return tableWithBegin;
 }
 
-DFA* table2DFA(TableWithBegin tableWithBegin, NFA* NFAOnlyEnd) {
-    DFA* head = new DFA;
-    auto [table, beginState] = tableWithBegin;
+DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd) {
+    DFA* head = new DFA();
+    auto [table, beginState, NFAEnd] = tableWithBegin;
+    map<State, DFA*> ma;
+    queue<State> q;
+    ma[beginState] = head;
+    q.push(beginState);
+    while (q.size()) {
+        State thisState = q.front();
+        DFA* thisDFA = ma[thisState];
+        q.pop();
+        for (pair<char, State> to : table[thisState]) {
+            State toState = to.second;
+            if (!ma.count(toState)) {
+                q.push(toState);
+                ma[toState] = new DFA(toState.count(NFAEnd));
+            }
+            DFA* toDFA = ma[toState];
+            thisDFA->add2({ to.first, toDFA });
+        }
+    }
     return head;
 }
