@@ -45,6 +45,7 @@ void Re2DFA::on_pushButton_clicked() {
     CONTINUE_WHEN_NOT_ERRORCODE;
     TableWithBeginEnd NFAStateTable = NFA2NFAStateTable(NFABegin, ui);
     DFA* DFABegin = table2DFA(NFAStateTable, NFABegin->singleEnd);
+    visualizeDFA(DFABegin, ui);
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -131,6 +132,16 @@ string Visualizer::showChar(char c) {
     string s;
     s += c;
     return s;
+}
+
+void Visualizer::toFile(const char* fileName, string& data, int& errorCode) {
+    ofstream ostr(fileName, ios::out);
+    if (!ostr.is_open()) {
+        errorCode = 7;
+        return;
+    }
+    ostr << data;
+    ostr.close();
 }
 
 void initTabwidget(Ui::Re2DFAClass& ui) {
@@ -368,13 +379,7 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
     }
     // #endregion
     data += vis.getFileData("DFA_tail.html");
-    ofstream ostr("outputNFA.html", ios::out);
-    if (!ostr.is_open()) {
-        errorCode = 7;
-        return;
-    }
-    ostr << data;
-    ostr.close();
+    vis.toFile("outputNFA.html", data, errorCode);
     // 显示
     ui.widget_htmlNFA->load(QUrl("file:///outputNFA.html"));
 }
@@ -463,5 +468,39 @@ DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd) {
 }
 
 void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui) {
-
+    Visualizer vis;
+    string data = vis.getFileData("DFA_head.html");
+    if (errorCode) return;
+    // #region: generate mermaid code
+    set<DFAf2> alreadyPath;
+    map<DFA*, string> nodeMap;
+    nodeMap[head] = "Begin";
+    queue<DFA*> nodes;
+    nodes.push(head);
+    int nodeNum = 1;
+    while (nodes.size()) {
+        DFA* node = nodes.front();
+        nodes.pop();
+        for (DFA2 to : node->to) {
+            if (alreadyPath.count({ node, to })) {
+                continue;
+            }
+            alreadyPath.insert({ node, to });
+            DFA* nextNode = to.second;
+            if (!nodeMap.count(nextNode)) {
+                nodes.push(nextNode);
+                nodeMap[nextNode] = to_string(nodeNum++);
+                data += nodeMap[nextNode] + "((" + nodeMap[nextNode] + "))\n";
+                if (nextNode->isEnd) {
+                    data += "style " + nodeMap[nextNode] + " stroke-width:5px\n";
+                }
+            }
+            data += nodeMap[node] + " --" + vis.showChar(to.first) + "--> " + nodeMap[nextNode] + "\n";
+        }
+    }
+    // #endregion
+    data += vis.getFileData("DFA_tail.html");
+    vis.toFile("outputDFA.html", data, errorCode);
+    ui.widget_htmlDFA->load(QUrl("file:///outputDFA.html"));
+    return;
 }

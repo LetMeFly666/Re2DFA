@@ -19,6 +19,7 @@ using namespace std;
 #define Table map<State, map<char, State>>  // <From State, [<Through Which Char, To State>]>
 #define TableWithBeginEnd tuple<Table, State, NFA*>  // <Table, Begin State, NFA End>
 #define DFA2 pair<char, DFA*>
+#define DFAf2 pair<DFA*, DFA2>
 
 class Re2DFA : public QWidget {
     Q_OBJECT
@@ -76,6 +77,7 @@ class Visualizer {
 public:
     string getFileData(const char* fileName);
     string showChar(char c);
+    void toFile(const char* fileName, string& data, int& errorCode);
 };
 
 void initTabwidget(Ui::Re2DFAClass& ui);
