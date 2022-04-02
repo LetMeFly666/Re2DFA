@@ -431,6 +431,9 @@ TableWithBeginEnd NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
         toCal.pop();
         for (char c : charsAppearedWithoutEmpty) {
             State newState = state2state(thisState, c);
+            if (newState.empty()) {  // 不需要全空的状态！
+                continue;
+            }
             table[thisState][c] = newState;
             if (!alreadyInQueue.count(newState)) {
                 toCal.push(newState);
