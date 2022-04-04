@@ -542,9 +542,6 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         for (DFA* thisDFA : allDFAs) {
             int areaCode = ma[thisDFA];
             if (alreadyAreacode.count(areaCode)) {
-                if (thisDFA->isEnd) {
-                    ans[areaCode]->isEnd = true;
-                }
                 continue;
             }
             alreadyAreacode.insert(areaCode);

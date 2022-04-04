@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-04 22:12:51
+ * @LastEditTime: 2022-04-04 22:28:07
 -->
 # Re2DFA
 
@@ -85,7 +85,7 @@ Regular expression to DFA(Deterministic Finite State)
 
 ## 实现思路
 
-输入的正则表达式 → 添加上省略的· → 转换为逆波兰表达式 → 转为NFA → 转为DFA
+输入的正则表达式 → 添加上省略的· → 转换为逆波兰表达式 → 转为NFA → 可视化显示NFA → NFA转为DFA(并可视化) -> 简化DFA(并可视化)
 
 ### 添加上省略的·
 
@@ -125,6 +125,32 @@ Regular expression to DFA(Deterministic Finite State)
 当成功让QT显示了html 且 成功用js生成mermaid图后，决定使用[此项目(https://github.com/mermaid-js/mermaid)](https://github.com/mermaid-js/mermaid)的js将程序生成的源码转成图像。
 
 在此对开源项目的开发者致敬！
+
+#### NFA转为DFA
+
+**思想：** λ（ε）合并、符号合并
+
+初态：Start的ε闭包
+
+每次：走一个Char后求闭包
+
+一个新的状态集为一个DFA
+
+#### 简化DFA
+
+**思想：** 将等价状态合并。
+
+**等价状态：** 初态在同组，经过相同的路径到达的节点也在同组。
+
+**初始分组：** 初始状态将“End节点”、“非End节点”划分为2组。
+
+**编程过程注意：** 
+
+若采用```map<DFA*, int>```来记录每个DFA对应的组号，则迭代过程中要注意不同DFA是否为同组的问题。包括但不限于：
+
+1. 起始状态不在同组但经过相同字符能到达同组的DFA不能划分为同组
+
+2. 由组中不在终态的节点建立的节点的isEnd是false，但同组有End节点的话应修改新节点的isEnd为true。（在1.的条件下似乎不会有2.的情况出现）
 
 ## Release
 
