@@ -594,6 +594,17 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         DFA2Areacode = thisAreacode;
     }
     map<int, DFA*> areacode2DFA = fromAreacode2DFA(DFA2Areacode, allDFAs);  // 区号->DFA
+    // Begin debug
+    static set<map<int, DFA*>> debug;
+    if (debug.empty()) {
+        debug.insert(areacode2DFA);
+    }
+    else {
+        if (!debug.count(areacode2DFA)) {
+            int a = 5;
+        }
+    }
+    // End debug
     set<int> alreadyAreacode;
     for (DFA* thisDFA : allDFAs) {
         int thisAreacode = DFA2Areacode[thisDFA];
