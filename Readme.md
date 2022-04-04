@@ -2,13 +2,25 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-01 10:46:46
+ * @LastEditTime: 2022-04-04 13:03:05
 -->
 # Re2DFA
 
 Regular expression to DFA(Deterministic Finite State)
 
 项目地址：[https://github.com/LetMeFly666/Re2DFA](https://github.com/LetMeFly666/Re2DFA) （预计2022年6月变成public）
+
+**使用方法**
+
+在正则表达式输入框输入正则表达式后，点击“转换”即可。
+
+当前[字符](#Character)、[运算符](#Operator)支持范围详情请点击查看。
+
+若输入不合法等导致程序出错，DFA等栏目将会显示默认状态。详情请看[错误码](#ErrorCode)
+
+**编译方法**
+
+在VS中添加QT插件，配置好QT环境后，<code>F5</code>编译运行即可。
 
 ## 实现目标
 
@@ -116,6 +128,8 @@ Regular expression to DFA(Deterministic Finite State)
 
 #### 打包QT程序所需依赖
 
+##### 1. QT所需
+
 ```bat
 windeployqt Re2DFA.exe
 ```
@@ -125,6 +139,18 @@ windeployqt Re2DFA.exe
 ```bat
 "F:\OtherApps\Program\QT\Apps\5.14.2\msvc2017_64\bin\windeployqt.exe" Re2DFA.exe
 ```
+
+**上述操作最好在一个空的文件夹(With Re2DFA.exe included)中进行。**
+
+##### 2. VS所需
+
+然后添加VS编译出来的程序运行所需要的DLL文件，包括但可能不限于：
+
+1. MSVCP140.dll
+
+2. VCRUNTIME140.dll
+
+3. VCRUNTIME140_1.dll
 
 ## TODO
 
