@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-04 13:34:12
+ * @LastEditTime: 2022-04-04 15:00:36
 -->
 # Re2DFA
 
@@ -33,6 +33,7 @@ Regular expression to DFA(Deterministic Finite State)
 + [运算符](#Operator)
 + [选择符](#OperatorOr)
 + [连接符](#OperatorConcatenation)
++ [括号符](#OperatorBrackets)
 + [重复符](#OperatorRepetition)
 + [错误码](#ErrorCode)
 
@@ -52,13 +53,16 @@ Regular expression to DFA(Deterministic Finite State)
 
 | 名称   | 类型     | 描述 |
 | ------ | -------- | ---- |
-| 运算符<a id="Operator"></a> | Operator | 确定正则的运算规则<br/>•支持<a href="#OperatorOr"><font color="black"><b>选择符</b></font></a><code>&#124;</code><br/>•支持<a href="#OperatorConcatenation"><font color="black"><b>连接符</b></font></a>```·```<br/>•支持<a href="#OperatorRepetition"><font color="black"><b>重复符</b></font></a>```*``` |
+| 运算符<a id="Operator"></a> | Operator | 确定正则的运算规则<br/>•支持<a href="#OperatorOr"><font color="black"><b>选择符</b></font></a><code>&#124;</code><br/>•支持<a href="#OperatorConcatenation"><font color="black"><b>连接符</b></font></a>```·```<br/>•支持<a href="#OperatorRepetition"><font color="black"><b>重复符</b></font></a>```*```<br/>•支持<a href="#OperatorBrackets"><font color="black"><b>括号符</b></font></a>```()``` |
 
 | 名称 | 类型 | 描述 |
 | ---- | --- | --- |
 | 选择符<a id="OperatorOr"></a> | Operator | 若```a```和```b```代表两个正则表达式，则<code>a&#124;b</code>代表```a或b```，即无论是```a```还是```b```都能匹配正则表达式 |
 | 连接符<a id="OperatorConcatenation"></a> | Operator | 若```a```和```b```代表两个正则表达式，则```a·b```代表```a后b```（```·```可省略，```a·b```等价于```ab```），即若一个串能从某处分成两串，使得前串匹配```a```且后串匹配```b```，则此串能匹配```a·b``` |
 | 重复符<a id="OperatorRepetition"></a> | Operator | 若```a```代表一个正则表达式，则```a*```代表```数个a```（个数n≥0），即若一个串能分成数个串，使得每个串都匹配```a```，则此串能匹配```a*``` |
+| 括号符<a id="OperatorBrackets"></a> | Operator | 若```a```代表一个正则表达式，则```(a)```等价于```a```。括号符不能拆开单独使用，但括号符可以提高优先级 |
+
+**优先级** ```()``` > ```*``` > ```·``` > ```|```
 
 **错误码**
 
