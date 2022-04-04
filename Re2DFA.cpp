@@ -453,7 +453,7 @@ TableWithBeginEnd NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui) {
 
 DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd) {
     DFA* head = new DFA();
-    auto [table, beginState, NFAEnd] = tableWithBegin;
+    auto& [table, beginState, NFAEnd] = tableWithBegin;
     map<State, DFA*> ma;
     queue<State> q;
     ma[beginState] = head;
@@ -558,17 +558,17 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         auto ifAlreadyExistsThisState = [&tempAreacode](map<char, int> thisDFA2s) {
             auto sameMapCharInt = [](map<char, int> a, map<char, int> b) {
                 vector<pair<char, int>> va, vb;
-                for (auto it : a) {
+                for (auto& it : a) {
                     va.push_back(it);
                 }
-                for (auto it : b) {
+                for (auto& it : b) {
                     vb.push_back(it);
                 }
                 sort(va.begin(), va.end());
                 sort(vb.begin(), vb.end());
                 return va == vb;
             };
-            for (auto it : tempAreacode) {
+            for (auto& it : tempAreacode) {
                 if (sameMapCharInt(it.first, thisDFA2s)) {
                     return true;
                 }
@@ -602,7 +602,7 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         }
         alreadyAreacode.insert(thisAreacode);
         DFA* newDFA = areacode2DFA[thisAreacode];
-        for (auto [path, toDFA] : thisDFA->to) {
+        for (auto& [path, toDFA] : thisDFA->to) {
             newDFA->add2({ path, areacode2DFA[DFA2Areacode[toDFA]] });
         }
     }
