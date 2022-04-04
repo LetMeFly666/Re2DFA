@@ -518,7 +518,7 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
     auto getInitialAreacode = [](DFA* head) {
         set<DFA*> visited;
         queue<DFA*> q;
-        map<DFA*, int> DFA2Areacode;
+        map<DFA*, int> DFA2Areacode;  // Old DFA
         q.push(head);
         visited.insert(head);
         while (q.size()) {
@@ -586,7 +586,7 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
                 thisAreacode[thisDFA] = tempAreacode[thisDFA2s];
             }
             else {
-                thisAreacode[thisDFA] = tempAreacode[thisDFA2s] = cntAreacode++;
+                tempAreacode[thisDFA2s] = thisAreacode[thisDFA] = cntAreacode++;
             }
         }
         if (thisAreacode == DFA2Areacode)
