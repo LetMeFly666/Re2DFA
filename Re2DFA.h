@@ -88,7 +88,7 @@ NFA* rePo2NFA(QString rePo);
 void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui);
 TableWithBeginEnd NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui);
 DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd);
-void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui);
+void visualizeDFA(DFA* head, QWebEngineView* displayAtWhere, const char* outputFilename);
 DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui);
 
 

@@ -45,10 +45,11 @@ void Re2DFA::on_pushButton_clicked() {
     CONTINUE_WHEN_NOT_ERRORCODE;
     TableWithBeginEnd NFAStateTable = NFA2NFAStateTable(NFABegin, ui);
     DFA* DFABegin = table2DFA(NFAStateTable, NFABegin->singleEnd);
-    visualizeDFA(DFABegin, ui);
+    visualizeDFA(DFABegin, ui.widget_htmlDFA, "outputDFA.html");
     CONTINUE_WHEN_NOT_ERRORCODE;
     DFA* DFASBegin = simplifyDFA(DFABegin, ui);
     CONTINUE_WHEN_NOT_ERRORCODE;
+    visualizeDFA(DFABegin, ui.widget_htmlDFA_simplified, "outputDFASimplified.html");
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -474,7 +475,7 @@ DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd) {
     return head;
 }
 
-void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui) {
+void visualizeDFA(DFA* head, QWebEngineView* displayAtWhere, const char* outputFilename) {
     Visualizer vis;
     string data = vis.getFileData("DFA_head.html");
     if (errorCode) return;
@@ -507,8 +508,8 @@ void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui) {
     }
     // #endregion
     data += vis.getFileData("DFA_tail.html");
-    vis.toFile("outputDFA.html", data, errorCode);
-    ui.widget_htmlDFA->load(QUrl("file:///outputDFA.html"));
+    vis.toFile(outputFilename, data, errorCode);
+    displayAtWhere->load(QUrl(("file:///" + string(outputFilename)).c_str()));
     return;
 }
 
