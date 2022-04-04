@@ -555,7 +555,7 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         map<DFA*, int> thisAreacode;
         int cntAreacode = 0;
         map<map<char, int>, int> tempAreacode;
-        auto ifAlreadyExistsThisState = [tempAreacode](map<char, int> thisDFA2s) {
+        auto ifAlreadyExistsThisState = [&tempAreacode](map<char, int> thisDFA2s) {
             auto sameMapCharInt = [](map<char, int> a, map<char, int> b) {
                 vector<pair<char, int>> va, vb;
                 for (auto it : a) {
