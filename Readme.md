@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-04 13:03:05
+ * @LastEditTime: 2022-04-04 13:34:12
 -->
 # Re2DFA
 
@@ -151,6 +151,16 @@ windeployqt Re2DFA.exe
 2. VCRUNTIME140.dll
 
 3. VCRUNTIME140_1.dll
+
+##### 3. html所需
+
+1. DFA_tail.html
+
+2. DFA_head.html
+
+3. initialDFA.html
+
+4. mermaid.min.js
 
 ## TODO
 
