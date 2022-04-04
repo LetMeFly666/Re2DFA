@@ -542,6 +542,9 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         for (DFA* thisDFA : allDFAs) {
             int areaCode = ma[thisDFA];
             if (alreadyAreacode.count(areaCode)) {
+                if (thisDFA->isEnd) {
+                    ans[areaCode]->isEnd = true;
+                }
                 continue;
             }
             alreadyAreacode.insert(areaCode);
@@ -554,14 +557,17 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
     while (true) {
         map<DFA*, int> thisAreacode;
         int cntAreacode = 0;
-        map<map<char, int>, int> tempAreacode;
-        auto ifAlreadyExistsThisState = [&tempAreacode](map<char, int> thisDFA2s) {
-            auto sameMapCharInt = [](map<char, int> a, map<char, int> b) {
+        map<pair<int, map<char, int>>, int> tempAreacode;  // <<初态组号, [<path, to组号>]>, 终态组号>
+        auto ifAlreadyExistsThisState = [&tempAreacode](pair<int, map<char, int>> thisDFA2s) {
+            auto sameMapCharInt = [](pair<int, map<char, int>> a, pair<int, map<char, int>> b) {
+                if (a.first != b.first) {
+                    return false;
+                }
                 vector<pair<char, int>> va, vb;
-                for (auto& it : a) {
+                for (auto& it : a.second) {
                     va.push_back(it);
                 }
-                for (auto& it : b) {
+                for (auto& it : b.second) {
                     vb.push_back(it);
                 }
                 sort(va.begin(), va.end());
@@ -576,11 +582,12 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
             return false;
         };
         for (DFA* thisDFA : allDFAs) {
-            map<char, int> thisDFA2s;
+            pair<int, map<char, int>> thisDFA2s;
+            thisDFA2s.first = DFA2Areacode[thisDFA];
             for (DFA2 to : thisDFA->to) {
                 char path = to.first;
                 DFA* toDFA = to.second;
-                thisDFA2s[path] = DFA2Areacode[toDFA];
+                thisDFA2s.second[path] = DFA2Areacode[toDFA];
             }
             if (ifAlreadyExistsThisState(thisDFA2s)) {
                 thisAreacode[thisDFA] = tempAreacode[thisDFA2s];
@@ -594,17 +601,6 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         DFA2Areacode = thisAreacode;
     }
     map<int, DFA*> areacode2DFA = fromAreacode2DFA(DFA2Areacode, allDFAs);  // 区号->DFA
-    // Begin debug
-    static set<map<int, DFA*>> debug;
-    if (debug.empty()) {
-        debug.insert(areacode2DFA);
-    }
-    else {
-        if (!debug.count(areacode2DFA)) {
-            int a = 5;
-        }
-    }
-    // End debug
     set<int> alreadyAreacode;
     for (DFA* thisDFA : allDFAs) {
         int thisAreacode = DFA2Areacode[thisDFA];
@@ -620,3 +616,36 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
     DFA* headS = areacode2DFA[DFA2Areacode[head]];
     return headS;
 }
+
+//DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
+//    typedef DFA oldDFA;
+//    typedef DFA newDFA;
+//    map<oldDFA*, int> dfa2areacode;
+//    set<oldDFA*> allDFAs;
+//    queue<oldDFA*> q;
+//    q.push(head);
+//    allDFAs.insert(head);
+//    dfa2areacode[head] = head->isEnd;
+//    while (q.size()) {
+//        oldDFA* thisDFA = q.front();
+//        q.pop();
+//        for (auto& [path, toDFA] : thisDFA->to) {
+//            if (allDFAs.count(toDFA)) {
+//                continue;
+//            }
+//            allDFAs.insert(toDFA);
+//            dfa2areacode[toDFA] = toDFA->isEnd;
+//            q.push(toDFA);
+//        }
+//    }
+//    while (true) {
+//        map<oldDFA*, int> dfa2areacodeNew;
+//        int areacode = 0;
+//
+//        if (dfa2areacodeNew == dfa2areacode) {
+//            break;
+//        }
+//        dfa2areacode = dfa2areacodeNew;
+//    }
+//
+//}
