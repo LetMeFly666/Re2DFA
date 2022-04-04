@@ -46,6 +46,9 @@ void Re2DFA::on_pushButton_clicked() {
     TableWithBeginEnd NFAStateTable = NFA2NFAStateTable(NFABegin, ui);
     DFA* DFABegin = table2DFA(NFAStateTable, NFABegin->singleEnd);
     visualizeDFA(DFABegin, ui);
+    CONTINUE_WHEN_NOT_ERRORCODE;
+    DFA* DFASBegin = simplifyDFA(DFABegin, ui);
+    CONTINUE_WHEN_NOT_ERRORCODE;
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
@@ -151,6 +154,7 @@ void initTabwidget(Ui::Re2DFAClass& ui) {
     ui.label_ReversePolish->setText("\350\257\267\350\276\223\345\205\245\346\255\243\345\210\231\350\241\250\350\276\276\345\274\217\345\271\266\347\202\271\345\207\273\350\275\254\346\215\242\346\214\211\351\222\256");  // 请输入正则表达式并点击转换按钮
     ui.widget_htmlNFA->load(QUrl("file:///initialDFA.html"));
     ui.widget_htmlDFA->load(QUrl("file:///initialDFA.html"));
+    ui.widget_htmlDFA_simplified->load(QUrl("file:///initialDFA.html"));
 }
 
 /* 将用,.代替的字符串转换为ε·代表的字符串 */
@@ -506,4 +510,81 @@ void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui) {
     vis.toFile("outputDFA.html", data, errorCode);
     ui.widget_htmlDFA->load(QUrl("file:///outputDFA.html"));
     return;
+}
+
+DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
+    /* DFA Head -> <Area Code, All DFAs> */
+    auto getInitialAreacode = [](DFA* head) {
+        set<DFA*> visited;
+        queue<DFA*> q;
+        map<DFA*, int> DFA2Areacode;
+        q.push(head);
+        visited.insert(head);
+        while (q.size()) {
+            DFA* thisDFA = q.front();
+            q.pop();
+            DFA2Areacode[thisDFA] = thisDFA->isEnd;  // 先按终止状态分为两组
+            for (DFA2 to : thisDFA->to) {
+                DFA* newDFA = to.second;
+                if (!visited.count(newDFA)) {
+                    visited.insert(newDFA);
+                    q.push(newDFA);
+                }
+            }
+        }
+        return make_pair(DFA2Areacode, visited);
+    };
+    /* 为每个区号建立DFA */
+    auto fromAreacode2DFA = [](map<DFA*, int> ma, set<DFA*> allDFAs) {
+        map<int, DFA*> ans;
+        set<int> alreadyAreacode;
+        for (DFA* thisDFA : allDFAs) {
+            int areaCode = ma[thisDFA];
+            if (alreadyAreacode.count(areaCode)) {
+                continue;
+            }
+            alreadyAreacode.insert(areaCode);
+            DFA* newDFA = new DFA(thisDFA->isEnd);
+            ans[areaCode] = newDFA;
+        }
+        return ans;
+    };
+    auto [DFA2Areacode , allDFAs] = getInitialAreacode(head);  // 区号
+    while (true) {
+        map<DFA*, int> thisAreacode;
+        int cntAreacode = 0;
+        map<map<char, int>, int> tempAreacode;
+        for (DFA* thisDFA : allDFAs) {
+            map<char, int> thisDFA2s;
+            for (DFA2 to : thisDFA->to) {
+                char path = to.first;
+                DFA* toDFA = to.second;
+                thisDFA2s[path] = DFA2Areacode[toDFA];
+            }
+            if (tempAreacode.count(thisDFA2s)) {
+                thisAreacode[thisDFA] = tempAreacode[thisDFA2s];
+            }
+            else {
+                thisAreacode[thisDFA] = tempAreacode[thisDFA2s] = cntAreacode++;
+            }
+        }
+        if (thisAreacode == DFA2Areacode)
+            break;
+        DFA2Areacode = thisAreacode;
+    }
+    map<int, DFA*> areacode2DFA = fromAreacode2DFA(DFA2Areacode, allDFAs);  // 区号->DFA
+    set<int> alreadyAreacode;
+    for (DFA* thisDFA : allDFAs) {
+        int thisAreacode = DFA2Areacode[thisDFA];
+        if (alreadyAreacode.count(thisAreacode)) {
+            continue;
+        }
+        alreadyAreacode.insert(thisAreacode);
+        DFA* newDFA = areacode2DFA[thisAreacode];
+        for (auto [path, toDFA] : thisDFA->to) {
+            newDFA->add2({ path, areacode2DFA[DFA2Areacode[toDFA]] });
+        }
+    }
+    DFA* headS = areacode2DFA[DFA2Areacode[head]];
+    return headS;
 }

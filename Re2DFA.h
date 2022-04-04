@@ -89,6 +89,8 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui);
 TableWithBeginEnd NFA2NFAStateTable(NFA* head, Ui::Re2DFAClass& ui);
 DFA* table2DFA(TableWithBeginEnd tableWithBegin, NFA* NFAOnlyEnd);
 void visualizeDFA(DFA* head, Ui::Re2DFAClass& ui);
+DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui);
+
 
 static set<char> Char = {
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
