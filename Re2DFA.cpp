@@ -555,6 +555,26 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         map<DFA*, int> thisAreacode;
         int cntAreacode = 0;
         map<map<char, int>, int> tempAreacode;
+        auto ifAlreadyExistsThisState = [tempAreacode](map<char, int> thisDFA2s) {
+            auto sameMapCharInt = [](map<char, int> a, map<char, int> b) {
+                vector<pair<char, int>> va, vb;
+                for (auto it : a) {
+                    va.push_back(it);
+                }
+                for (auto it : b) {
+                    vb.push_back(it);
+                }
+                sort(va.begin(), va.end());
+                sort(vb.begin(), vb.end());
+                return va == vb;
+            };
+            for (auto it : tempAreacode) {
+                if (sameMapCharInt(it.first, thisDFA2s)) {
+                    return true;
+                }
+            }
+            return false;
+        };
         for (DFA* thisDFA : allDFAs) {
             map<char, int> thisDFA2s;
             for (DFA2 to : thisDFA->to) {
@@ -562,7 +582,7 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
                 DFA* toDFA = to.second;
                 thisDFA2s[path] = DFA2Areacode[toDFA];
             }
-            if (tempAreacode.count(thisDFA2s)) {
+            if (ifAlreadyExistsThisState(thisDFA2s)) {
                 thisAreacode[thisDFA] = tempAreacode[thisDFA2s];
             }
             else {

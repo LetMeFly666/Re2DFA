@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-04 15:00:36
+ * @LastEditTime: 2022-04-04 20:01:04
 -->
 # Re2DFA
 
@@ -170,3 +170,4 @@ windeployqt Re2DFA.exe
 
 ### BugFix
 
++ ```0(0|1)*1``` 转换错误
