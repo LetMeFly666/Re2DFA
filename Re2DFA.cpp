@@ -49,7 +49,7 @@ void Re2DFA::on_pushButton_clicked() {
     CONTINUE_WHEN_NOT_ERRORCODE;
     DFA* DFASBegin = simplifyDFA(DFABegin, ui);
     CONTINUE_WHEN_NOT_ERRORCODE;
-    visualizeDFA(DFABegin, ui.widget_htmlDFA_simplified, "outputDFASimplified.html");
+    visualizeDFA(DFASBegin, ui.widget_htmlDFA_simplified, "outputDFASimplified.html");
 }
 
 void Re2DFA::on_pushButton_Connect_clicked() {
