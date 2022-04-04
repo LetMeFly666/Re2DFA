@@ -558,29 +558,6 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
         map<DFA*, int> thisAreacode;
         int cntAreacode = 0;
         map<pair<int, map<char, int>>, int> tempAreacode;  // <<初态组号, [<path, to组号>]>, 终态组号>
-        auto ifAlreadyExistsThisState = [&tempAreacode](pair<int, map<char, int>> thisDFA2s) {
-            auto sameMapCharInt = [](pair<int, map<char, int>> a, pair<int, map<char, int>> b) {
-                if (a.first != b.first) {
-                    return false;
-                }
-                vector<pair<char, int>> va, vb;
-                for (auto& it : a.second) {
-                    va.push_back(it);
-                }
-                for (auto& it : b.second) {
-                    vb.push_back(it);
-                }
-                sort(va.begin(), va.end());
-                sort(vb.begin(), vb.end());
-                return va == vb;
-            };
-            for (auto& it : tempAreacode) {
-                if (sameMapCharInt(it.first, thisDFA2s)) {
-                    return true;
-                }
-            }
-            return false;
-        };
         for (DFA* thisDFA : allDFAs) {
             pair<int, map<char, int>> thisDFA2s;
             thisDFA2s.first = DFA2Areacode[thisDFA];
@@ -589,7 +566,7 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
                 DFA* toDFA = to.second;
                 thisDFA2s.second[path] = DFA2Areacode[toDFA];
             }
-            if (ifAlreadyExistsThisState(thisDFA2s)) {
+            if (tempAreacode.count(thisDFA2s)) {
                 thisAreacode[thisDFA] = tempAreacode[thisDFA2s];
             }
             else {
@@ -616,36 +593,3 @@ DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
     DFA* headS = areacode2DFA[DFA2Areacode[head]];
     return headS;
 }
-
-//DFA* simplifyDFA(DFA* head, Ui::Re2DFAClass& ui) {
-//    typedef DFA oldDFA;
-//    typedef DFA newDFA;
-//    map<oldDFA*, int> dfa2areacode;
-//    set<oldDFA*> allDFAs;
-//    queue<oldDFA*> q;
-//    q.push(head);
-//    allDFAs.insert(head);
-//    dfa2areacode[head] = head->isEnd;
-//    while (q.size()) {
-//        oldDFA* thisDFA = q.front();
-//        q.pop();
-//        for (auto& [path, toDFA] : thisDFA->to) {
-//            if (allDFAs.count(toDFA)) {
-//                continue;
-//            }
-//            allDFAs.insert(toDFA);
-//            dfa2areacode[toDFA] = toDFA->isEnd;
-//            q.push(toDFA);
-//        }
-//    }
-//    while (true) {
-//        map<oldDFA*, int> dfa2areacodeNew;
-//        int areacode = 0;
-//
-//        if (dfa2areacodeNew == dfa2areacode) {
-//            break;
-//        }
-//        dfa2areacode = dfa2areacodeNew;
-//    }
-//
-//}
