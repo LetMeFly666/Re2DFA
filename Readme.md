@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-04 22:28:07
+ * @LastEditTime: 2022-04-05 13:28:37
 -->
 # Re2DFA
 
@@ -21,6 +21,11 @@ Regular expression to DFA(Deterministic Finite State)
 **编译方法**
 
 在VS中添加QT插件，配置好QT环境后，<code>F5</code>编译运行即可。
+
+**例如**
+
++ ```0(0|1)*1```
++ ```1|(0(0|1)*1)*```
 
 ## 实现目标
 
