@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-05 15:24:26
+ * @LastEditTime: 2022-04-05 15:31:11
 -->
 # Re2DFA
 
@@ -267,6 +267,8 @@ windeployqt Re2DFA.exe
 + 便捷输入的各个字符按钮点击后不会自动聚焦到输入框，而是需要再次点击输入框才能继续按键输入
 
 + 在缩放比例不是100%的Windows系统上，字体大小会发生变化
+
++ 程序界面大小固定，不可放大。
 
 ### BugFix
 
