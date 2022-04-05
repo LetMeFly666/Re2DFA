@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-05 14:06:00
+ * @LastEditTime: 2022-04-05 14:51:36
 -->
 # Re2DFA
 
@@ -197,7 +197,44 @@ windeployqt Re2DFA.exe
 
 4. mermaid.min.js
 
+### Release
+
+#### DLL、静态文件等依赖
+
+<details>
+<summary>QT所需</summary>
+<li><a href="https://github.com/LetMeFly666/Re2DFA/releases/download/DLLs%2CStaticFilesAndSoOn/QT.Relaies.zip">QT.Relaies.zip</a></li>
+</details>
+
+<details>
+<summary>VS所需</summary>
+<li><a href="https://github.com/LetMeFly666/Re2DFA/releases/download/DLLs%2CStaticFilesAndSoOn/Dlls.Because.of.Visual.Sutdio.zip">Dlls.Because.of.Visual.Sutdio.zip</a></li>
+</details>
+
+<details>
+<summary>静态文件</summary>
+<li><a href="https://github.com/LetMeFly666/Re2DFA/releases/download/DLLs%2CStaticFilesAndSoOn/HtmlAndJs.zip">HtmlAndJs.zip</a></li>
+</details>
+
+#### 发行版
+
+<details>
+<summary>v0.0.1-x64</summary>
+<li><a href="https://github.com/LetMeFly666/Re2DFA/releases/download/v0.0.1/v0.0.1-x64-Release.zip">v0.0.1-x64-Release.zip</a></li>
+<li>单文件：<a href="https://github.com/LetMeFly666/Re2DFA/releases/download/v0.0.1/Re2DFA.exe">Re2DFA.exe</a></li>
+</details>
+
 ## TODO
+
+### ForBetter
+
++ 正则表达式与运算过多时，生成的SVG图片可能水平宽度过大，导致图片上的字体非常小
+
++ 生成的SVG图片无法上下居中（若上下居中，则竖直高度过高时可能无法上下滑动导致内容显示不全）
+
++ 便捷输入的各个字符按钮点击后只会将字符插入到输入框末尾，而不能插入到光标所在位置
+
++ 便捷输入的各个字符按钮点击后不会自动聚焦到输入框，而是需要再次点击输入框才能继续按键输入
 
 ### BugFix
 
