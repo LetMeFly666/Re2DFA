@@ -379,7 +379,7 @@ void visualizeNFA(NFA* head, Ui::Re2DFAClass& ui) {
                 nodeMap[nextNode] = to_string(nodeNum++);
                 data += nodeMap[nextNode] + "((" + nodeMap[nextNode] + "))\n";
             }
-            data += nodeMap[node] + " --" + vis.showChar(to.first) + "--> " + nodeMap[nextNode] + "\n";
+            data += nodeMap[node] + " -- " + vis.showChar(to.first) + " --> " + nodeMap[nextNode] + "\n";
         }
     }
     // #endregion
@@ -503,7 +503,7 @@ void visualizeDFA(DFA* head, QWebEngineView* displayAtWhere, const char* outputF
                     data += "style " + nodeMap[nextNode] + " stroke-width:5px\n";
                 }
             }
-            data += nodeMap[node] + " --" + vis.showChar(to.first) + "--> " + nodeMap[nextNode] + "\n";
+            data += nodeMap[node] + " -- " + vis.showChar(to.first) + " --> " + nodeMap[nextNode] + "\n";
         }
     }
     // #endregion
