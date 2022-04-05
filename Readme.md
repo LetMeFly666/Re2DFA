@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-05 14:51:36
+ * @LastEditTime: 2022-04-05 15:14:46
 -->
 # Re2DFA
 
@@ -18,6 +18,32 @@ Regular expression to DFA(Deterministic Finite State)
 
 若输入不合法等导致程序出错，DFA等栏目将会显示默认状态。详情请看[错误码](#ErrorCode)
 
+以“第一个字符为0，最后一个字符1，由0和1组成的字符串”为例：
+
+运行程序：
+
+主页：
+
+![MainPage](docs/imgs/MainPage.jpg)
+
+输入前：
+
+![BeforeInput](docs/imgs/BeforeInput.jpg)
+
+输入```0(0|1)*1```并点击```转换```：
+
+NFA：
+
+![NFA](docs/imgs/NFA.jpg)
+
+DFA：
+
+![DFA](docs/imgs/DFA.jpg)
+
+简化DFA：
+
+![DFA Simplified](docs/imgs/DFA_Simplified.jpg)
+
 **编译方法**
 
 在VS中添加QT插件，配置好QT环境后，<code>F5</code>编译运行即可。
@@ -28,6 +54,8 @@ Regular expression to DFA(Deterministic Finite State)
 + ```1|(0(0|1)*1)*```
 
 ## 实现目标
+
+输入正则表达式，程序绘制出对应的简化DFA
 
 ## 概念
 
@@ -197,7 +225,7 @@ windeployqt Re2DFA.exe
 
 4. mermaid.min.js
 
-### Release
+### 下载发行版
 
 #### DLL、静态文件等依赖
 
@@ -235,6 +263,8 @@ windeployqt Re2DFA.exe
 + 便捷输入的各个字符按钮点击后只会将字符插入到输入框末尾，而不能插入到光标所在位置
 
 + 便捷输入的各个字符按钮点击后不会自动聚焦到输入框，而是需要再次点击输入框才能继续按键输入
+
++ 在缩放比例不是100%的Windows系统上，字体大小会发生变化
 
 ### BugFix
 
