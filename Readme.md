@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-05 15:14:46
+ * @LastEditTime: 2022-04-05 15:24:26
 -->
 # Re2DFA
 
@@ -250,6 +250,8 @@ windeployqt Re2DFA.exe
 <summary>v0.0.1-x64</summary>
 <li><a href="https://github.com/LetMeFly666/Re2DFA/releases/download/v0.0.1/v0.0.1-x64-Release.zip">v0.0.1-x64-Release.zip</a></li>
 <li>单文件：<a href="https://github.com/LetMeFly666/Re2DFA/releases/download/v0.0.1/Re2DFA.exe">Re2DFA.exe</a></li>
+<li><a href="https://github.com/LetMeFly666/Re2DFA/archive/refs/tags/v0.0.1.zip">Source code (zip)</a></li>
+<li><a href="https://github.com/LetMeFly666/Re2DFA/archive/refs/tags/v0.0.1.tar.gz">Source code (tar.gz)</a></li>
 </details>
 
 ## TODO
