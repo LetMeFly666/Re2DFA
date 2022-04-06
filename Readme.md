@@ -2,7 +2,7 @@
  * @Author: LetMeFly
  * @Date: 2022-03-28 15:29:51
  * @LastEditors: LetMeFly
- * @LastEditTime: 2022-04-05 15:31:11
+ * @LastEditTime: 2022-04-05 17:52:23
 -->
 # Re2DFA
 
@@ -52,6 +52,7 @@ DFA：
 
 + ```0(0|1)*1```
 + ```1|(0(0|1)*1)*```
++ ```(a|b)*ab(a*|b)```
 
 ## 实现目标
 
